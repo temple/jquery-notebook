@@ -24,6 +24,7 @@
      * with the others that were previously applied to the element.
      */
 
+
     var transform = (function() {
         var matrixToArray = function(str) {
             if (!str || str == 'none') {
@@ -106,7 +107,15 @@
         cache = {
             command: false,
             shift: false,
-            isSelecting: false
+            isSelecting: false,
+            reset: function(focusedElement,focusedElementIndex,caretNode,caretOffset,caretOffsetStart){
+                cache.focusedElement = focusedElement;
+                cache.focusedElementIndex = focusedElementIndex;
+                cache.caretNode = caretNode;
+                cache.caretOffset = caretOffset;
+                cache.caretOffsetStart = caretOffsetStart;
+                return cache;
+            }
         },
         modifiers = {
             66: 'bold',
@@ -118,6 +127,17 @@
         },
         options,
         utils = {
+            math:{
+                guid : function() {
+                    function s4() {
+                        return Math.floor((1 + Math.random()) * 0x10000)
+                          .toString(16)
+                          .substring(1);
+                    }
+                    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+                        s4() + '-' + s4() + s4() + s4();
+                }
+            },
             keyboard: {
                 isCommand: function(e, callbackTrue, callbackFalse) {
                     if (isMac && e.metaKey || !isMac && e.ctrlKey) {
@@ -152,9 +172,13 @@
                 }
             },
             html: {
-                addTag: function(elem, tag, focus, editable) {
+                createTag: function(tag,editable){
                     var newElement = $(d.createElement(tag));
                     newElement.attr('contenteditable', Boolean(editable));
+                    return newElement;
+                },
+                addTag: function(elem, tag, focus, editable) {
+                    var newElement = utils.html.createTag(tag,editable);
                     newElement.append(' ');
                     elem.append(newElement);
                     if (focus) {
@@ -162,9 +186,194 @@
                         utils.cursor.set(elem, 0, cache.focusedElement);
                     }
                     return newElement;
+                },
+                /**
+                 * Produces an array containing elements 
+                 * @param  {[type]} node        [description]
+                 * @param  {[type]} offsetstart [description]
+                 * @param  {[type]} offsetend   [description]
+                 * @return {[type]}             [description]
+                 */
+                getParts: function(node,offsetstart,offsetend){
+                    var parts;
+                    if (node.hasChildNodes() || node.nodeType == 1 ){
+                        console.log(cache);
+                    }
+                    else if ((node.nodeName == "#text") || (node.nodeType == 3) ){
+                        parts = utils.html.split($(node),offsetend,offsetstart);
+                        var part0 = d.createTextNode(parts[0]!==null?parts[0]:'');
+                        var part1 = d.createTextNode(parts[1]!==null?parts[1]:'');
+
+                    }
+                    else{
+                        console.log('Function getParts has not been implemented to retrieve Parts for following kind of node');
+                        console.log(node);
+                    }
+                    return [part0,part1];
+                },
+                /**
+                 * Inserts requested Tag in cached Caret position
+                 * @param  jQuery  elem     Editor
+                 * @param  String  tag      Tag identifier ('p','div','a','span'...)
+                 * @param  boolean focus    [description]
+                 * @param  boolean editable Sets the "contentEditable property"
+                 * @return jQuery           New created Tag once inserted
+                 */
+                insertTag: function(elem, tag, focus, editable){
+                    if (cache.caretNode){
+                        var parentNode = cache.caretNode.parentNode;
+                        // Node value where caret is positioned is split into two parts
+                        // part #0 goes from start until caret position
+                        // part #1 goes from caret position until the end
+                        var parts = utils.html.getParts(cache.caretNode,cache.caretOffsetStart,cache.caretOffset);
+
+
+                        // Current caretNode value is replaced with its first
+                        cache.caretNode.nodeValue = parts[0] ? parts[0] : '';
+                        // Then a new Tag is created
+                        var tagNode = utils.html.createTag(tag,editable);
+                        var uid =utils.math.guid();
+                        tagNode.attr("id",uid);
+                        // And its next sibling
+                        var tagNodeSibling = d.createTextNode(parts[1] ? parts[1] : '');
+
+                        // Tag is appended
+                        if (cache.caretNode.nextSibling !== null){
+                            parentNode.insertBefore(tagNode.get(0),cache.caretNode.nextSibling);
+                        }else{
+                            parentNode.appendChild(tagNode.get(0));
+                        }
+
+                        // Tag next sibling is appended to
+                        if (tagNode.get(0).nextSibling !== null){
+                            parentNode.insertBefore(tagNodeSibling,tagNode.get(0).nextSibling);
+                        }else{
+                            parentNode.appendChild(tagNodeSibling);
+                        }
+
+                        return $(tagNode);
+
+                        // Cursor is reset
+                        utils.cursor.after(elem,parts[0].length+tagNode.get(0).outerHTML.length,tagNode);
+
+
+/**                        cache.caretNode.
+                        +tagNode.get(0).outerHTML+parts[1];
+                        var html = $(cache.caretNode.parentNode).html().toString();
+                        var next = cache.caretNode.nextSibling;
+                        if (next == null){
+                            parentNode.removeChild(cache.caretNode);
+                            parentNode.appendChild(d.create)
+                        }else{}
+                        //Old 
+                        parentNode.innerHTML = html.replace($(cache.caretNode).html(), newtext);
+
+                        
+/**                        range = utils.selection.save();
+                        utils.selection.restore(range);
+**/
+                        
+                    }else{
+                        return utils.html.addTag(elem,tag,focus,editable);
+                    }
+                },
+                isEditable: function(elem){
+                    return (elem.contentEditable !== "false");
+                },
+                addVariable(elem,variable) {
+                    var range = utils.selection.save();
+                    if (utils.selection.isEditable(range)){
+                        var varLabel = utils.html.insertTag(elem, 'span', true, false);
+                        var varLabelCaption = $(variable).text().toString();
+                        var varLabelHint = $(variable).attr('title').toString();
+                        varLabel.attr('class',"variable");
+                        varLabel.attr('title',varLabelHint);
+                        varLabel.html(varLabelCaption);
+                        //Cache is reset to new caret position
+                        var labelParent = varLabel.get(0).parentNode;
+                        var labelIndex = Array.prototype.indexOf.call(labelParent.childNodes, varLabel.get(0));
+                        cache.reset(labelParent,labelIndex+1,varLabel.get(0).nextSibling,0,0);
+                    }
+                    else
+                        console.log('Not editable region');
+                    //utils.selection.restore(range);
+                },
+                /**
+                 * Splits an element inner text into two parts
+                 * from start until offset and from offset to end
+                 * @return String[2] Array of two string parts
+                 */
+                split: function(elem,offset,startOffset=null){
+                    var text = elem.html() ? elem.html() : elem.text();
+                    if (offset < 0) offset = 0;
+                    if (offset >= text.length) offset = text.length;
+                    if ((startOffset == null) || (startOffset > offset))
+                        startOffset = offset;
+
+                    var first = text.substring(0, startOffset);
+                    var second= text.substring(offset);
+
+                    return [first,second];
                 }
             },
             cursor: {
+                after: function(editor, pos, elem){
+                    var selection = w.getSelection();
+                    var range;
+                    if (d.createRange) range = d.createRange();
+                    else console.log("IMPLEMENTATION PENDING");
+
+                    selection.removeAllRanges();
+
+                    console.log("Next Sibling");
+                    console.log(elem.get(0).nextSibling);
+
+                    console.log("Next Sibling (typeof)");
+                    console.log(typeof elem.get(0).nextSibling);
+
+                    if (elem.get(0).nextSibling == null){
+                        var textNode = d.createTextNode('');
+                        elem.get(0).parentNode.appendChild(textNode);
+                    }
+                        //Cursor is set at the start of its following textNode
+                    range.setStart(elem.get(0).nextSibling, 0);
+                    range.collapse(true);
+                    selection.addRange(range);
+
+                    return;
+
+
+                    var nextAll = elem.nextAll();
+                    var next = null;
+                    for(var i = 0; i < nextAll.length; i++){
+                        if (utils.html.isEditable(nextAll[i])){
+                            next = nextAll[i];
+                            break;
+                        }
+                    }
+                    if (next != null){
+                        console.log("We are gonna place cursor at");
+                        console.log(next);
+                        //utils.cursor.set(this,0,next);
+                    }else{
+                        console.log("YOU MUST IMPLEMENT THE APPEND OF NEW EMPTY textNode AFTER VARIABLE");
+                    }
+
+
+                    selection.addRange(range);
+                    range.select();
+
+/**
+                    var next = varLabel.next();
+
+                    if (next.length && utils.html.isEditable(next))
+                        console.log(varLabel.next());
+                    else
+                        console.log("no next sibling");
+**/
+
+
+                },
                 set: function(editor, pos, elem) {
                     var range;
                     if (d.createRange) {
@@ -187,6 +396,23 @@
                 }
             },
             selection: {
+                isEditable: function(range){
+                    var editable=true;
+                    if (range.startContainer == range.endContainer || range.collapsed){
+                        node=range.startContainer;
+                        if (node.childNodes.length>0){
+                            for (var i =0; i< node.childNodes.length; i++ ){d
+                                editable=editable && utils.html.isEditable(node.childNodes[i]);
+                            }
+                        }
+                        else
+                            editable = utils.html.isEditable(node.parentNode?node.parentNode:node.parentElement);
+                    }
+                    else
+                        editable=false;
+
+                    return editable;
+                },
                 save: function() {
                     if (w.getSelection) {
                         var sel = w.getSelection();
@@ -447,7 +673,8 @@
                 $(this).find('.placeholder').remove();
             },
             preserveElementFocus: function() {
-                var anchorNode = w.getSelection() ? w.getSelection().anchorNode : d.activeElement;
+                var sel =w.getSelection();
+                var anchorNode = sel ? sel.anchorNode : d.activeElement;
                 if (anchorNode) {
                     var current = anchorNode.parentNode,
                         diff = current !== cache.focusedElement,
@@ -462,10 +689,8 @@
                             break;
                         }
                     }
-                    if (diff) {
-                        cache.focusedElement = current;
-                        cache.focusedElementIndex = elementIndex;
-                    }
+                    if (diff)
+                        cache.reset(current,elementIndex,anchorNode,sel.getRangeAt(0).endOffset,sel.getRangeAt(0).startOffset);
                 }
             },
             setContentArea: function(elem) {
@@ -494,6 +719,26 @@
                     var firstP = elem.find('p:not(.placeholder)');
                     utils.cursor.set(elem, 0, firstP);
                 }
+                if (typeof options.variables === "object"){
+                    actions.prepareVariables(elem,options.variables);
+                }
+            },
+            prepareVariables: function(elem,variables){
+                if (variables.length > 0){
+                    variables.each(function(idx,variable){
+                        var events = $._data(variable,"events");
+                        // Cannot assign a click on a list item having already a click handler
+                        if (events && events.click) return;
+                        else
+                            actions.prepareVariable(elem,variable);
+                    });
+                }
+            },
+            prepareVariable: function(elem,variable){
+                $(variable).on('click', function(event){
+                    event.preventDefault();
+                    utils.html.addVariable(elem,variable);
+                });
             }
         },
         rawEvents = {
@@ -597,7 +842,7 @@
                     if (s) {
                         if (s.collapsed) {
                             bubble.clear.call(elem);
-                        } else {
+                        } else if (utils.selection.isEditable(s)) {
                             bubble.show.call(elem);
                             e.preventDefault();
                         }
@@ -609,6 +854,11 @@
                 mouseY = e.pageY;
             },
             blur: function(e) {
+                //Stores current position
+                if (e.target == e.currentTarget){
+                    actions.preserveElementFocus.call(e.currentTarget);
+                }
+
                 actions.setPlaceholder.call(this, {
                     focus: false
                 });
@@ -767,7 +1017,9 @@
         autoFocus: false,
         placeholder: 'Your text here...',
         mode: 'multiline',
-        modifiers: ['bold', 'italic', 'underline', 'h1', 'h2', 'ol', 'ul', 'anchor']
+        modifiers: ['bold', 'italic', 'underline', 'h1', 'h2', 'ol', 'ul', 'anchor'],
+        variables : null
     };
+
 
 })(jQuery, document, window);

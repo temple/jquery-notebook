@@ -1,0 +1,155 @@
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>ITBID SLIM EDITOR DEMO</title>
+        <meta charset='utf-8'>
+        <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="stylesheet" type="text/css" href="src/js/jquery.notebook.css">
+            <style type="text/css">
+            div.variables
+            {
+                min-width: 100px;
+                width:15%;
+                position: fixed;
+                margin-left: 0;
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+
+            div.variables ul{
+                list-style-type: none;                
+            }
+
+            div.variables > ul > li, span.variable{
+                border-radius: 6px;
+                border-style: dotted;
+                border-color: #494F61;
+                border-spacing: 1px;
+                background-color: #B5BFFB;
+                font-style: oblique; 
+                font-weight: bold;
+                color: white;                
+            }
+
+            div.variables > ul > li{
+                max-width:80px;
+                max-height:30px;
+                padding: 2px 7px;
+                margin: 10px;
+                cursor: pointer;
+                /*line-height: 1em;*/
+            }
+
+            div.editor{
+                text-align: justify;
+            }
+            @media print{
+                div.variables{
+                    display: none;
+                }
+                div.editor{
+                    position: absolute;
+                    margin:5em 5em;
+                    max-height: 24cm;
+                    max-width: 17cm; 
+                }
+            }
+
+        </style>
+    </head>
+    <body>
+        <div class="variables">
+            <ul>
+            <li data-class="variable" title="Var 1">@var1@</li>
+            <li data-class="variable" title="Var 2">@var2@</li>
+            <li data-class="variable" title="Var 3">@var3@</li>
+            <li data-class="variable" title="Var 4">@var4@</li>
+            </ul>
+        </div>
+        <div class="editor">
+            <h1>CLÁUSULAS:</h1><p><b>CLÁUSULA PRIMERA.-</b> <b>OBJETO GENERAL DEL CONTRATO: EL CONTRATISTA</b> se compromete al suministro, instalación y puesta en funcionamiento de los equipos de aire acondicionado para el PAD de <span class="variable">@Nombre_del_PAD@</span> ubicado en  <span class="variable">@Direccion_de_Ubicacion@</span> de la actual nomenclatura urbana del municipio de [Ciudad de Ubicación]. Todo lo anterior, de acuerdo con las especificaciones que constan en la cotización y en la comunicación de fecha <span class="variable">@Fecha_de_la_Propuesta@</span>, presentada por EL CONTRATISTA.</p><p><br><b>CLÁUSULA SEGUNDA.- DOCUMENTOS DEL CONTRATO:</b> Forma parte integral del presente contrato las cotizaciones  que aparecen en la oferta que EL CONTRATISTA hace al CONTRATANTE y que consta en la cotización y en la comunicación de fecha <span class="variable">@Fecha_de_la_Propuesta@</span>.</p><p><b>CLÁUSULA TERCERA.- OBLIGACIONES DEL CONTRATISTA: 1)</b> Suministrar e instalar los equipos de Aire Acondicionado de acuerdo con lo aprobado. <b>2)</b> Adquirir todos los materiales, elementos y equipos indispensables para la ejecución del objeto del presente Contrato, cumpliendo con las especificaciones pactadas en los presupuestos aprobados por <b>EL CONTRATANTE</b>. <b>3)</b> Cumplir con todas las obligaciones que surgen de la naturaleza de éste Contrato, así como también con las normas y disposiciones que las leyes o reglamentos vigentes expidan respecto a la ejecución del objeto del Contrato. <b>4) EL CONTRATISTA</b> será responsable por la solidez, buena calidad e idoneidad de los trabajos ejecutados por él, por sus dependientes, por sus empleados y trabajadores; por consiguiente cualquier daño, defecto o deficiencia de los trabajos realizados, del cual, a juicio de <b>EL CONTRATANTE</b> deba responder <b>EL CONTRATISTA</b>, será reparado por éste y a su costa dentro del plazo fijado por EL CONTRATANTE, aunque la reparación sea necesario realizarla con posterioridad a la terminación y entrega total al suministros, instalación y puesta en funcionamiento de los equipos de aire acondicionado. <b>5)</b> Constituir en favor de <b>EL CONTRATANTE</b>, las garantías bancarias o de compañía de seguros legalmente constituidas y aceptadas por EL <b>CONTRATANTE</b> solicitadas en la Cláusula Décima Quinta del presente Contrato. 6) <b>EL CONTRATISTA</b>, tendrá la responsabilidad del pago de todas las obligaciones relativas a sus trabajadores, tanto de salarios, seguridad social, etc., exonerando a EL CONTRATANTE de cualquier tipo de responsabilidad por sus trabajadores, que no son ni se considerarán en ningún caso trabajadores de EL CONTRATANTE. 7) EL CONTRATISTA deberá acreditar a EL CONTRATANTE el cumplimiento del pago mensual de los aportes a sus trabajadores de los sistemas de salud, pensiones, riesgos profesionales, SENA, ICBF, cajas de compensación familiar y pago de aportes en el Sistema General de Riesgos Laborales.</p><p><b>PARÁGRAFO PRIMERO</b>.- Cualquier deterioro de los equipos debido a la mala ejecución o a la deficiencia o mala calidad de los materiales empleados deberá ser reparado por <b>EL CONTRATISTA</b> a su costa y dentro de los cinco (5) días calendarios siguientes contados desde la fecha del aviso escrito dado por <b>EL CONTRATANTE</b>.</p><p><b>PARÁGRAFO SEGUNDO.- EL CONTRATISTA</b> responderá por todos los daños y perjuicios que se causen a terceros, sea a las personas mismas ó a sus bienes y que provengan de hechos, descuido, imprudencia, omisiones, negligencia o culpa en la realización de los trabajos cumplidos en desarrollo del presente Contrato. En caso de presentarse reclamación o litigio contra EL CONTRATANTE por esta causa, EL CONTRATISTA estará obligado a salir en defensa de EL CONTRATANTE y, en caso de condena, a pagar directamente a el (los) reclamante (s), o a reintegrar a EL CONTRATANTE la suma que éste hubiera pagado.</p><p>PARÁGRAFO TERCERO.- Si EL CONTRATISTA no cumple con dichas reparaciones a satisfacción y dentro del término estipulado por EL CONTRATANTE, queda entendido que la autoriza expresamente a ejecutarlas directa o indirectamente, asumiendo EL CONTRATISTA el costo de las mismas y este valor podrá deducirse de las sumas adeudadas a EL CONTRATISTA por cualquier concepto ó ser cobrado a éste por vía judicial.</p><p>CLÁUSULA CUARTA.- OBLIGACIONES DEL CONTRATANTE: EL CONTRATANTE se obliga a: 1. Recibir los equipos objeto de suministro e instalación. 2. Establecer en acuerdo con EL CONTRATISTA el horario de recibo de los equipos e indicar el lugar donde se deberán instalarse los mismos. 3. Validar las condiciones de calidad de la entrega de los equipos. 4. Facilitar el uso de las instalaciones físicas y servicios públicos en donde se van a instalar los equipos. 5. Dirigir y coordinar las acciones necesarias para el recibo e instalación de los equipos. 6. Pagar el valor del Contrato en los términos de que tratan la cláusula sexta del presente Contrato.</p><p>CLÁUSULA QUINTA.- PLAZO DE ENTREGA: EL CONTRATISTA iniciará las labores objeto de este Contrato, el día hábil siguiente a la entrega del anticipo estipulado en la Cláusula siguiente. Para la entrega del anticipo, deberá estar legalizado el presente Contrato, constituidas las garantías y pólizas estipuladas en la cláusula Décima Quinta de éste Contrato. La instalación de los equipos, objeto de éste Contrato deberán ser entregadas a satisfacción de EL CONTRATANTE, a los diez (10) días calendarios, contados a partir de su firma, entrega del anticipo y constitución de pólizas.</p><p>PARÁGRAFO PRIMERO.- Los plazos establecidos en este Contrato podrán ser modificados únicamente por fuerza mayor debidamente comprobada. Cualquier modificación del plazo deberá ser evaluada y aprobada por EL CONTRATANTE, previa solicitud de EL CONTRATISTA.</p><p>PARÁGRAFO SEGUNDO.- No se acepta como fuerza mayor para justificar el incumplimiento de EL CONTRATISTA la no consecución de mano de obra, materiales, herramientas y equipo, ya que la aceptación del mismo implica la capacidad para conseguirlos.</p><p>PARÁGRAFO TERCERO.- EL CONTRATANTE no asume la obligación de suscribir con EL CONTRATISTA o con otras personas, otros Contratos distintos a este.</p><p>CLÁUSULA SEXTA.- VALOR DEL CONTRATO Y FORMA DE PAGO: El valor total  del contrato será la suma de [Valor en letras] ($[Valor en Números])  más IVA, que EL CONTRATANTE pagará al CONTRATISTA de la siguiente manera: a) El treinta por ciento (30%) del valor del contrato, a la firma del presente contrato a manera de anticipo, y una vez constituidas las garantías a favor del CONTRATANTE solicitadas en este contrato. Y b) El saldo, es decir, el cincuenta por setenta (70%) restante, se pagará a la entrega de la obra, lo cual deberá constar en acta debidamente suscrita por las partes a satisfacción del CONTRATANTE.</p><p></p><p></p>
+        </div>
+        
+        <script type="text/javascript" src="src/js/libs/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="src/js/jquery.notebook.js"></script>
+        
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('.editor').notebook({
+                    autoFocus: true,
+                    placeholder: 'Type something awesome...',
+                    variables: $('div.variables ul li[data-class="variable"]')
+                });
+                //console.log(jQuery.fn.notebook);
+            });
+
+            var editorDomElement = $('.editor').get(0);
+            var replacing =false;
+            var regexp_variable = /([\s\A\n]|<p>)\@[a-zA-Z0-9_-]+\@(<\/p>|[\s\n\Z])/;
+            var regexp_pure_variable= /\@[a-zA-Z0-9_-]+\@/;
+            editorDomElement.addEventListener('contentChange', function(e) {                
+                if (replacing) return;                
+                replacing=true;                
+                var content = e.detail.content;
+                content = content.replace('&nbsp;',' ');
+                var found_variable = regexp_variable.exec(content);
+                editorDomElement.contentEditable = (found_variable == null ? "true" : "false");
+                
+                // Se prepara el nuevo contenido de editorDomElement
+                while (found_variable != null){                    
+                    var pure_variable = regexp_pure_variable.exec(found_variable);
+                    var found_variable = found_variable[0].toString().replace(pure_variable[0].toString(),'<span class="variable" contenteditable="false">'+pure_variable[0].toString()+'</span>');
+                    content=content.replace(regexp_variable,found_variable);
+                    found_variable = regexp_variable.exec(content);                
+                }
+
+                // Se sustituye el contenido de editorDomElement por el nuevo contenido preparado
+                if (editorDomElement.contentEditable == "false"){
+                    // Captura de la posición del cursor
+                    var offset =getCaretCharacterOffset(e.target);                                
+                    // Reemplazo
+                    editorDomElement.innerHTML = content;
+                    // Captura de la posición del cursor
+                    setCaretCharacterOffset(editorDomElement,offset);
+                    editorDomElement.contentEditable = "true";
+                }
+                replacing=false;
+                return;
+            })
+
+            function setCaretCharacterOffset(element,offset){
+                if (typeof window.getSelection != "undefined") {
+                    var range = window.getSelection().getRangeAt(0);
+                    console.log(range);
+                    /*element.setSelectionRange(0,offset);
+                    console.log('Break 1');*/
+                }
+                console.log('Break 2');
+            }
+
+            function getCaretCharacterOffset(element) {
+                var caretOffset = 0;
+                if (typeof window.getSelection != "undefined") {
+                    var range = window.getSelection().getRangeAt(0);
+                    var preCaretRange = range.cloneRange();
+                    preCaretRange.selectNodeContents(element);
+                    preCaretRange.setEnd(range.endContainer, range.endOffset);
+                    caretOffset = preCaretRange.toString().length;
+                    console.log('a');
+                } else if (typeof document.selection != "undefined" && document.selection.type != "Control") {
+                    var textRange = document.selection.createRange();
+                    var preCaretTextRange = document.body.createTextRange();
+                    preCaretTextRange.moveToElementText(element);
+                    preCaretTextRange.setEndPoint("EndToEnd", textRange);
+                    caretOffset = preCaretTextRange.text.length;
+                    console.log('b');
+                }
+                return caretOffset;
+            }
+              
+
+        </script>
+    </body>
+</html>
